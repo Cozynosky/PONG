@@ -1,6 +1,7 @@
 import pygame,sys
 import PONGSETTINGS as settings
-import PADDLE as paddle
+import PADDLE as pad
+import BALL as b
 from pygame.locals import *
 
 def startMenu(window):
@@ -80,7 +81,8 @@ def prepareMenuOptions(onep_c = (255,255,255), twop_c = (255,255,255)):
 
 def onePlayerMode(window):
     onePlayerClock = pygame.time.Clock()
-    player = paddle.Paddle()
+    player = pad.Paddle()
+    ball = b.Ball()
     game_start = False
     while True:
         window.fill((0,0,0))
@@ -102,16 +104,20 @@ def onePlayerMode(window):
                 if event.key == K_RIGHT or event.key == K_d:
                     player.right = False
         
+        player.draw(window)
+        ball.draw(window)
+        
         if game_start == True:
             player.update()
-        
+            ball.update()
+
         else:
             text_font = pygame.font.SysFont('courier',20)
             text = text_font.render("Press 'ENTER' to start",True,(255,255,255))
             text_rect = text.get_rect()
             window.blit(text,(settings.WIDTH//2 - text_rect.width//2,settings.HEIGHT//2 - text_rect.height//2))
         
-        player.draw(window)
+        
         pygame.display.update()
         onePlayerClock.tick(60)
 

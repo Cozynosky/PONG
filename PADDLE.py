@@ -8,7 +8,7 @@ class Paddle(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.height = 15
         self.width = 70
-        self.speed = 4
+        self.speed = 5
         self.left = False
         self.right = False
         self.image = pygame.Surface((self.width,self.height))
