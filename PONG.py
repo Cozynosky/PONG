@@ -1,5 +1,6 @@
 import pygame,sys
 import PONGSETTINGS as settings
+import PADDLE as paddle
 from pygame.locals import *
 
 def startMenu(window):
@@ -69,8 +70,8 @@ def prepareMenuOptions(onep_c = (255,255,255), twop_c = (255,255,255)):
 
     #list of surfaces to print
     surfaces = [(title,title_rect.topleft),
-    (onePlayerOpt,onePlayerOpt_rect.topleft),
-    (twoPlayerOpt,twoPlayerOpt_rect.topleft)]
+    (onePlayerOpt,onePlayerOpt_rect),
+    (twoPlayerOpt,twoPlayerOpt_rect)]
 
     #dict of rect
     rects = {'title':title_rect,'onePlayerOpt':onePlayerOpt_rect,'twoPlayerOpt':twoPlayerOpt_rect}
@@ -79,6 +80,7 @@ def prepareMenuOptions(onep_c = (255,255,255), twop_c = (255,255,255)):
 
 def onePlayerMode(window):
     onePlayerClock = pygame.time.Clock()
+    player = paddle.Paddle()
     game_start = False
     while True:
         window.fill((0,0,0))
@@ -87,12 +89,21 @@ def onePlayerMode(window):
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_LEFT or event.key == K_a:
+                    player.left = True
+                if event.key == K_RIGHT or event.key == K_d:
+                    player.right = True
             if event.type == KEYUP:
                 if event.key == K_RETURN:
                     game_start = True
+                if event.key == K_LEFT or event.key == K_a:
+                    player.left = False
+                if event.key == K_RIGHT or event.key == K_d:
+                    player.right = False
         
         if game_start == True:
-            print("started")
+            player.update()
         
         else:
             text_font = pygame.font.SysFont('courier',20)
@@ -100,6 +111,7 @@ def onePlayerMode(window):
             text_rect = text.get_rect()
             window.blit(text,(settings.WIDTH//2 - text_rect.width//2,settings.HEIGHT//2 - text_rect.height//2))
         
+        player.draw(window)
         pygame.display.update()
         onePlayerClock.tick(60)
 
