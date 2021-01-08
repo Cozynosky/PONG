@@ -26,3 +26,11 @@ class Paddle(pygame.sprite.Sprite):
     
     def draw(self,window):
         window.blit(self.image,self.rect)
+
+    def ball_hitted(self,ball):
+        if ball.rect.bottom > self.rect.top-2 and ball.rect.right > self.rect.left and ball.rect.left < self.rect.right:
+            ball.down = not ball.down
+            if ball.right == self.right:
+                ball.speed += 2
+                
+                    

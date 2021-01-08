@@ -4,12 +4,13 @@ import PONGSETTINGS as settings
 
 class Ball(pygame.sprite.Sprite):
 
-    def __init__(self):
+    def __init__(self,gamemode = '1P'):
         pygame.sprite.Sprite.__init__(self)
+        self.gamemode = gamemode
         self.size = 15
         self.speed = 3
-        self.vertical = random.choice([0,1])   #vertical 0 - up 1 - down
-        self.horizontal = random.choice([0,1]) #horizontal 0 - left  1 - right
+        self.down = random.choice([0,1])   #vertical 0 - up 1 - down
+        self.right = random.choice([0,1]) #horizontal 0 - left  1 - right
         self.color = (255,255,255)
         self.image = pygame.Surface((self.size,self.size))
         self.rect = self.image.get_rect()
@@ -18,13 +19,13 @@ class Ball(pygame.sprite.Sprite):
     
     def update(self):
         self.check_wall_collision()
-        if self.vertical:
+        if self.down:
             self.rect.bottom += self.speed
-        if not self.vertical:
+        if not self.down:
             self.rect.top -= self.speed
-        if self.horizontal:
+        if self.right:
             self.rect.right += self.speed
-        if not self.horizontal:
+        if not self.right:
             self.rect.left -= self.speed
     
     def draw(self,window):
@@ -33,6 +34,11 @@ class Ball(pygame.sprite.Sprite):
 
     def check_wall_collision(self):
         if self.rect.left < 0:
-            self.horizontal = 1
+            self.right = 1
         if self.rect.right > settings.WIDTH:
-            self.horizontal = 0
+            self.right = 0
+        if self.rect.top > settings.HEIGHT:
+            self.kill()
+        if self.gamemode == '1P':
+            if self.rect.top < 0:
+                self.down = 1

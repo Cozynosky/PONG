@@ -82,9 +82,10 @@ def prepareMenuOptions(onep_c = (255,255,255), twop_c = (255,255,255)):
 def onePlayerMode(window):
     onePlayerClock = pygame.time.Clock()
     player = pad.Paddle()
-    ball = b.Ball()
+    balls = pygame.sprite.Group()
+    balls.add(b.Ball())
     game_start = False
-    while True:
+    while balls:
         window.fill((0,0,0))
         
         for event in pygame.event.get():
@@ -105,11 +106,14 @@ def onePlayerMode(window):
                     player.right = False
         
         player.draw(window)
-        ball.draw(window)
+        balls.draw(window)
         
         if game_start == True:
             player.update()
-            ball.update()
+            for ball in balls:
+                player.ball_hitted(ball)
+            balls.update()
+            
 
         else:
             text_font = pygame.font.SysFont('courier',20)
@@ -129,3 +133,4 @@ if __name__ == "__main__":
         game_mode = startMenu(window)
         if game_mode == 'onePlayerOpt':
             onePlayerMode(window)
+        break
