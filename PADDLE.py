@@ -32,10 +32,21 @@ class Paddle(pygame.sprite.Sprite):
         if ball.rect.bottom > self.rect.top-2 and ball.rect.bottom < self.rect.bottom and ball.rect.centerx > self.rect.left and ball.rect.centerx < self.rect.right:
             ball.down = not ball.down
             self.score += 1
+            if self.right != self.left:
+                if self.right == ball.right:
+                    ball.speed += 1
+                elif ball.speed != 1:
+                    ball.speed -= 1
         elif ball.rect.bottom > self.rect.top-2 and ball.rect.right > self.rect.left and ball.rect.left < self.rect.left:
-            ball.right = 0
+            if ball.right == 1:
+                ball.right = 0
+            else:
+                ball.speed += 1
         elif ball.rect.bottom > self.rect.top-2 and ball.rect.right > self.rect.right and ball.rect.left < self.rect.right:
-            ball.right = 1
+            if ball.right == 0:
+                ball.right = 1
+            else:
+                ball.speed += 1
         
 
                 
