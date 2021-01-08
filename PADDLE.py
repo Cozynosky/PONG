@@ -9,6 +9,7 @@ class Paddle(pygame.sprite.Sprite):
         self.height = 15
         self.width = 70
         self.speed = 5
+        self.score = 0
         self.left = False
         self.right = False
         self.image = pygame.Surface((self.width,self.height))
@@ -28,9 +29,14 @@ class Paddle(pygame.sprite.Sprite):
         window.blit(self.image,self.rect)
 
     def ball_hitted(self,ball):
-        if ball.rect.bottom > self.rect.top-2 and ball.rect.right > self.rect.left and ball.rect.left < self.rect.right:
+        if ball.rect.bottom > self.rect.top-2 and ball.rect.bottom < self.rect.bottom and ball.rect.centerx > self.rect.left and ball.rect.centerx < self.rect.right:
             ball.down = not ball.down
-            if ball.right == self.right:
-                ball.speed += 2
+            self.score += 1
+        elif ball.rect.bottom > self.rect.top-2 and ball.rect.right > self.rect.left and ball.rect.left < self.rect.left:
+            ball.right = 0
+        elif ball.rect.bottom > self.rect.top-2 and ball.rect.right > self.rect.right and ball.rect.left < self.rect.right:
+            ball.right = 1
+        
+
                 
                     

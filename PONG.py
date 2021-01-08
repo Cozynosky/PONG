@@ -82,6 +82,11 @@ def prepareMenuOptions(onep_c = (255,255,255), twop_c = (255,255,255)):
 def onePlayerMode(window):
     onePlayerClock = pygame.time.Clock()
     player = pad.Paddle()
+
+    #setup fonts
+    score_font = pygame.font.SysFont('courier',20,True)
+    text_font = pygame.font.SysFont('courier',20)
+
     balls = pygame.sprite.Group()
     balls.add(b.Ball())
     game_start = False
@@ -105,22 +110,25 @@ def onePlayerMode(window):
                 if event.key == K_RIGHT or event.key == K_d:
                     player.right = False
         
+        #draw elements
         player.draw(window)
         balls.draw(window)
+        score = score_font.render("SCORE:"+str(player.score),True,(0,255,255))
+        score_rect = score.get_rect()
+        window.blit(score,(settings.WIDTH//2 - score_rect.width//2,40))
         
+        #update elements if true
         if game_start == True:
             player.update()
             for ball in balls:
                 player.ball_hitted(ball)
             balls.update()
             
-
+            
         else:
-            text_font = pygame.font.SysFont('courier',20)
             text = text_font.render("Press 'ENTER' to start",True,(255,255,255))
             text_rect = text.get_rect()
-            window.blit(text,(settings.WIDTH//2 - text_rect.width//2,settings.HEIGHT//2 - text_rect.height//2))
-        
+            window.blit(text,(settings.WIDTH//2 - text_rect.width//2,settings.HEIGHT//2 - text_rect.height//2 - 40))
         
         pygame.display.update()
         onePlayerClock.tick(60)
@@ -133,4 +141,4 @@ if __name__ == "__main__":
         game_mode = startMenu(window)
         if game_mode == 'onePlayerOpt':
             onePlayerMode(window)
-        break
+        
