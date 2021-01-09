@@ -67,8 +67,6 @@ class Paddle(pygame.sprite.Sprite):
             ):
                 if ball.right == 0:
                     ball.right = 1
-                else:
-                    ball.speed += 1
             # ball lost 1 life down
 
         if self.player == "P2":
