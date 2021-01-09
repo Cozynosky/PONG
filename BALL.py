@@ -6,6 +6,7 @@ import PONGSETTINGS as settings
 class Ball(pygame.sprite.Sprite):
     def __init__(self, gamemode="1P"):
         pygame.sprite.Sprite.__init__(self)
+        self.ball_on_board = True
         self.gamemode = gamemode
         self.size = 15
         self.speed = 3
@@ -43,7 +44,10 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.right > settings.WIDTH:
             self.right = 0
         if self.rect.top > settings.HEIGHT:
-            self.kill()
+            self.ball_on_board = False
         if self.gamemode == "1P":
             if self.rect.top < 0:
                 self.down = 1
+        if self.gamemode == "2P":
+            if self.rect.bottom < 0:
+                self.ball_on_board = False

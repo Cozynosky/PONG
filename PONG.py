@@ -99,10 +99,9 @@ def onePlayerMode(window):
     score_font = pygame.font.SysFont("courier", 20, True)
     text_font = pygame.font.SysFont("courier", 20)
 
-    balls = pygame.sprite.Group()
-    balls.add(b.Ball())
+    ball = b.Ball()
     game_start = False
-    while balls:
+    while ball.ball_on_board:
         window.fill((0, 0, 0))
 
         for event in pygame.event.get():
@@ -124,7 +123,7 @@ def onePlayerMode(window):
 
         # draw elements
         player.draw(window)
-        balls.draw(window)
+        ball.draw(window)
         score = score_font.render("SCORE:" + str(player.score), True, (0, 255, 255))
         score_rect = score.get_rect()
         window.blit(score, (settings.WIDTH // 2 - score_rect.width // 2, 40))
@@ -132,9 +131,8 @@ def onePlayerMode(window):
         # update elements if true
         if game_start == True:
             player.update()
-            for ball in balls:
-                player.ball_hitted(ball)
-            balls.update()
+            player.ball_hitted(ball)
+            ball.update()
 
         else:
             text = text_font.render("Press 'ENTER' to start", True, (255, 255, 255))
@@ -149,7 +147,129 @@ def onePlayerMode(window):
 
         pygame.display.update()
         onePlayerClock.tick(60)
+    
+    game_ended = True
+    
+    while game_ended:
 
+        player.draw(window)
+        ball.draw(window)
+
+        ending = text_font.render("Press any key to go to menu", True, (255, 255, 255))
+        ending_rect = ending.get_rect()
+        window.blit(ending,
+                    (
+                        settings.WIDTH // 2 - ending_rect.width // 2,
+                        settings.HEIGHT // 2 - ending_rect.height // 2 - 40,
+                    ),
+                )
+
+        for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == KEYUP:
+                    game_ended = False
+        
+        pygame.display.update()
+        onePlayerClock.tick(60)
+
+
+def twoPlayerMode(window):
+    twoPlayerClock = pygame.time.Clock()
+    p1 = pad.Paddle()
+    p2 = pad.Paddle('P2')
+
+    ball = b.Ball('2P')
+
+    text_font = pygame.font.SysFont("courier", 20)
+
+    game_start = False
+
+    while ball.ball_on_board:
+        window.fill((0, 0, 0))
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                #p1
+                if event.key == K_LEFT: 
+                    p1.left = True
+                if event.key == K_RIGHT:
+                    p1.right = True
+                #p2
+                if event.key == K_a: 
+                    p2.left = True
+                if event.key == K_d:
+                    p2.right = True
+            if event.type == KEYUP:
+                if event.key == K_RETURN:
+                    game_start = True
+                #p1
+                if event.key == K_LEFT:
+                    p1.left = False
+                if event.key == K_RIGHT:
+                    p1.right = False
+                #p2
+                if event.key == K_a: 
+                    p2.left = False
+                if event.key == K_d:
+                    p2.right = False
+        
+        # draw elements
+        p1.draw(window)
+        p2.draw(window)
+        ball.draw(window)
+        
+        # update elements if true
+        if game_start == True:
+            p1.update()
+            p2.update()
+            p1.ball_hitted(ball)
+            p2.ball_hitted(ball)
+            ball.update()
+
+        else:
+            text = text_font.render("Press 'ENTER' to start", True, (255, 255, 255))
+            text_rect = text.get_rect()
+            window.blit(
+                text,
+                (
+                    settings.WIDTH // 2 - text_rect.width // 2,
+                    settings.HEIGHT // 2 - text_rect.height // 2 - 40,
+                ),
+            )
+
+        pygame.display.update()
+        twoPlayerClock.tick(60)
+    
+    game_ended = True
+    
+    while game_ended:
+        p1.draw(window)
+        p2.draw(window)
+        ball.draw(window)
+
+        ending = text_font.render("Press any key to go to menu", True, (255, 255, 255))
+        ending_rect = ending.get_rect()
+        window.blit(ending,
+                    (
+                        settings.WIDTH // 2 - ending_rect.width // 2,
+                        settings.HEIGHT // 2 - ending_rect.height // 2 - 40,
+                    ),
+                )
+
+        for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == KEYUP:
+                    game_ended = False
+        
+        pygame.display.update()
+        twoPlayerClock.tick(60)
 
 if __name__ == "__main__":
     pygame.init()
@@ -159,3 +279,5 @@ if __name__ == "__main__":
         game_mode = startMenu(window)
         if game_mode == "onePlayerOpt":
             onePlayerMode(window)
+        if game_mode == "twoPlayerOpt":
+            twoPlayerMode(window)

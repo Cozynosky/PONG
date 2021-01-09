@@ -6,6 +6,7 @@ import PONGSETTINGS as settings
 class Paddle(pygame.sprite.Sprite):
     def __init__(self, player="P1"):
         pygame.sprite.Sprite.__init__(self)
+        self.player = player
         self.height = 15
         self.width = 70
         self.speed = 5
@@ -18,6 +19,8 @@ class Paddle(pygame.sprite.Sprite):
         self.rect.centerx = settings.WIDTH // 2
         if player == "P1":
             self.rect.bottom = settings.HEIGHT - 10
+        if player == 'P2':
+            self.rect.top = 10
 
     def update(self):
         if self.left and self.rect.left > 0:
@@ -29,34 +32,35 @@ class Paddle(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
 
     def ball_hitted(self, ball):
-        if (
-            ball.rect.bottom > self.rect.top - 2
-            and ball.rect.bottom < self.rect.bottom
-            and ball.rect.centerx > self.rect.left
-            and ball.rect.centerx < self.rect.right
-        ):
-            ball.down = not ball.down
-            self.score += 1
-            if self.right != self.left:
-                if self.right == ball.right:
+        if self.player == 'P1':
+            if (
+                ball.rect.bottom > self.rect.top - 2
+                and ball.rect.bottom < self.rect.bottom
+                and ball.rect.centerx > self.rect.left
+                and ball.rect.centerx < self.rect.right
+            ):
+                ball.down = not ball.down
+                self.score += 1
+                if self.right != self.left:
+                    if self.right == ball.right:
+                        ball.speed += 1
+                    elif ball.speed != 1:
+                        ball.speed -= 1
+            elif (
+                ball.rect.bottom > self.rect.top - 2
+                and ball.rect.right > self.rect.left
+                and ball.rect.left < self.rect.left
+            ):
+                if ball.right == 1:
+                    ball.right = 0
+                else:
                     ball.speed += 1
-                elif ball.speed != 1:
-                    ball.speed -= 1
-        elif (
-            ball.rect.bottom > self.rect.top - 2
-            and ball.rect.right > self.rect.left
-            and ball.rect.left < self.rect.left
-        ):
-            if ball.right == 1:
-                ball.right = 0
-            else:
-                ball.speed += 1
-        elif (
-            ball.rect.bottom > self.rect.top - 2
-            and ball.rect.right > self.rect.right
-            and ball.rect.left < self.rect.right
-        ):
-            if ball.right == 0:
-                ball.right = 1
-            else:
-                ball.speed += 1
+            elif (
+                ball.rect.bottom > self.rect.top - 2
+                and ball.rect.right > self.rect.right
+                and ball.rect.left < self.rect.right
+            ):
+                if ball.right == 0:
+                    ball.right = 1
+                else:
+                    ball.speed += 1
