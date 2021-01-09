@@ -20,7 +20,7 @@ class Paddle(pygame.sprite.Sprite):
         self.rect.centerx = settings.WIDTH // 2
         if player == "P1":
             self.rect.bottom = settings.HEIGHT - 10
-        if player == 'P2':
+        if player == "P2":
             self.rect.top = 10
 
     def update(self):
@@ -33,8 +33,8 @@ class Paddle(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
 
     def ball_hitted(self, ball):
-        if self.player == 'P1':
-            #paddle collision on the top
+        if self.player == "P1":
+            # paddle collision on the top
             if (
                 ball.rect.bottom > self.rect.top - 2
                 and ball.rect.bottom < self.rect.bottom
@@ -43,13 +43,13 @@ class Paddle(pygame.sprite.Sprite):
             ):
                 ball.down = not ball.down
                 self.score += 1
-                #ball speedup and speeddown
+                # ball speedup and speeddown
                 if self.right != self.left:
                     if self.right == ball.right:
                         ball.speed += 1
                     elif ball.speed != 1:
                         ball.speed -= 1
-            #ball collision on left side
+            # ball collision on left side
             elif (
                 ball.rect.bottom > self.rect.top - 2
                 and ball.rect.right > self.rect.left
@@ -59,7 +59,7 @@ class Paddle(pygame.sprite.Sprite):
                     ball.right = 0
                 else:
                     ball.speed += 1
-            #ball collision on right side
+            # ball collision on right side
             elif (
                 ball.rect.bottom > self.rect.top - 2
                 and ball.rect.right > self.rect.right
@@ -69,14 +69,16 @@ class Paddle(pygame.sprite.Sprite):
                     ball.right = 1
                 else:
                     ball.speed += 1
-            #ball lost 1 life down
+            # ball lost 1 life down
 
-        if self.player == 'P2':
-            #ball collision on bottom of paddle
-            if (ball.rect.top < self.rect.bottom + 2
+        if self.player == "P2":
+            # ball collision on bottom of paddle
+            if (
+                ball.rect.top < self.rect.bottom + 2
                 and ball.rect.top > self.rect.top
                 and ball.rect.centerx > self.rect.left
-                and ball.rect.centerx < self.rect.right):
+                and ball.rect.centerx < self.rect.right
+            ):
                 ball.down = not ball.down
                 self.score += 1
                 if self.right != self.left:
@@ -84,16 +86,17 @@ class Paddle(pygame.sprite.Sprite):
                         ball.speed += 1
                     elif ball.speed != 1:
                         ball.speed -= 1
-            #ball collision of left side
-            if (ball.rect.top < self.rect.bottom + 2
+            # ball collision of left side
+            if (
+                ball.rect.top < self.rect.bottom + 2
                 and ball.rect.right > self.rect.left
                 and ball.rect.left < self.rect.left
-                ):
-                    if ball.right == 1:
-                        ball.right = 0
-                    else:
-                        ball.speed += 1
-            #ball collision on right side
+            ):
+                if ball.right == 1:
+                    ball.right = 0
+                else:
+                    ball.speed += 1
+            # ball collision on right side
             elif (
                 ball.rect.top < self.rect.bottom + 2
                 and ball.rect.right > self.rect.right

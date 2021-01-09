@@ -37,12 +37,12 @@ class Ball(pygame.sprite.Sprite):
     def draw(self, window):
         # pygame.draw.circle(window, (255,255,255), (100,100), self.size/2)
         window.blit(self.image, self.rect)
-    
+
     def who_scored(self):
         if self.rect.bottom < 0:
-            return 'P1'
+            return "P1"
         if self.rect.top > settings.HEIGHT:
-            return 'P2'
+            return "P2"
 
     def check_wall_collision(self):
         if self.rect.left < 0:
