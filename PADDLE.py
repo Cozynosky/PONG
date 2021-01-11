@@ -31,6 +31,13 @@ class Paddle(pygame.sprite.Sprite):
 
     def draw(self, window):
         window.blit(self.image, self.rect)
+    
+    def reset_position(self):
+        self.rect.centerx = settings.WIDTH // 2
+        if self.player == "P1":
+            self.rect.bottom = settings.HEIGHT - 10
+        if self.player == "P2":
+            self.rect.top = 10
 
     def ball_hitted(self, ball):
         if self.player == "P1":
@@ -41,6 +48,7 @@ class Paddle(pygame.sprite.Sprite):
                 and ball.rect.centerx > self.rect.left
                 and ball.rect.centerx < self.rect.right
             ):
+                settings.ball_hit_sound.play()
                 ball.down = not ball.down
                 self.score += 1
                 # ball speedup and speeddown
@@ -55,6 +63,7 @@ class Paddle(pygame.sprite.Sprite):
                 and ball.rect.right > self.rect.left
                 and ball.rect.left < self.rect.left
             ):
+                settings.ball_hit_sound.play()
                 if ball.right == 1:
                     ball.right = 0
                 else:
@@ -65,6 +74,7 @@ class Paddle(pygame.sprite.Sprite):
                 and ball.rect.right > self.rect.right
                 and ball.rect.left < self.rect.right
             ):
+                settings.ball_hit_sound.play()
                 if ball.right == 0:
                     ball.right = 1
             # ball lost 1 life down
@@ -77,6 +87,7 @@ class Paddle(pygame.sprite.Sprite):
                 and ball.rect.centerx > self.rect.left
                 and ball.rect.centerx < self.rect.right
             ):
+                settings.ball_hit_sound.play()
                 ball.down = not ball.down
                 self.score += 1
                 if self.right != self.left:
@@ -90,6 +101,7 @@ class Paddle(pygame.sprite.Sprite):
                 and ball.rect.right > self.rect.left
                 and ball.rect.left < self.rect.left
             ):
+                settings.ball_hit_sound.play()
                 if ball.right == 1:
                     ball.right = 0
                 else:
@@ -100,6 +112,7 @@ class Paddle(pygame.sprite.Sprite):
                 and ball.rect.right > self.rect.right
                 and ball.rect.left < self.rect.right
             ):
+                settings.ball_hit_sound.play()
                 if ball.right == 0:
                     ball.right = 1
                 else:

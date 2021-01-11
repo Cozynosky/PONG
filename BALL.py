@@ -47,13 +47,18 @@ class Ball(pygame.sprite.Sprite):
     def check_wall_collision(self):
         if self.rect.left < 0:
             self.right = 1
+            settings.wall_hit_sound.play()
         if self.rect.right > settings.WIDTH:
+            settings.wall_hit_sound.play()
             self.right = 0
         if self.rect.top > settings.HEIGHT:
             self.ball_on_board = False
+            settings.ball_dead_sound.play()
         if self.gamemode == "1P":
             if self.rect.top < 0:
+                settings.wall_hit_sound.play()
                 self.down = 1
         if self.gamemode == "2P":
             if self.rect.bottom < 0:
+                settings.ball_dead_sound.play()
                 self.ball_on_board = False
