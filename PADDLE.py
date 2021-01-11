@@ -30,12 +30,12 @@ class Paddle(pygame.sprite.Sprite):
         if self.right and self.rect.right < settings.WIDTH:
             self.rect.right += self.speed
         if self.play_sound:
-            settings.play_sound('paddle_hit')
+            settings.play_sound("paddle_hit")
             self.play_sound = False
 
     def draw(self, window):
         window.blit(self.image, self.rect)
-    
+
     def reset_position(self):
         self.rect.centerx = settings.WIDTH // 2
         if self.player == "P1":

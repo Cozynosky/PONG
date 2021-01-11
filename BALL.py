@@ -23,7 +23,10 @@ class Ball(pygame.sprite.Sprite):
         )
         self.rect.center = (settings.WIDTH // 2, settings.HEIGHT // 2)
         if gamemode == "MENU":
-            self.rect.center = (random.randint(self.size,settings.WIDTH), random.randint(self.size,settings.HEIGHT))
+            self.rect.center = (
+                random.randint(self.size, settings.WIDTH),
+                random.randint(self.size, settings.HEIGHT),
+            )
 
     def update(self):
         self.check_wall_collision()
@@ -49,22 +52,24 @@ class Ball(pygame.sprite.Sprite):
     def check_wall_collision(self):
         if self.rect.left < 0:
             self.right = 1
-            settings.play_sound('wall_hit')
+            if self.gamemode != "MENU":
+                settings.play_sound("wall_hit")
         if self.rect.right > settings.WIDTH:
-            settings.play_sound('wall_hit')
+            if self.gamemode != "MENU":
+                settings.play_sound("wall_hit")
             self.right = 0
-        if self.rect.top > settings.HEIGHT and self.gamemode != 'MENU':
+        if self.rect.top > settings.HEIGHT and self.gamemode != "MENU":
             self.ball_on_board = False
-            settings.play_sound('ball_dead')
-        if self.gamemode == 'MENU':
+            settings.play_sound("ball_dead")
+        if self.gamemode == "MENU":
             if self.rect.bottom > settings.HEIGHT:
-                settings.play_sound('wall_hit')
                 self.down = 0
         if self.gamemode == "1P" or self.gamemode == "MENU":
             if self.rect.top < 0:
-                settings.play_sound('wall_hit')
+                if self.gamemode != "MENU":
+                    settings.play_sound("wall_hit")
                 self.down = 1
         if self.gamemode == "2P":
             if self.rect.bottom < 0:
-                settings.play_sound('ball_dead')
+                settings.play_sound("ball_dead")
                 self.ball_on_board = False
