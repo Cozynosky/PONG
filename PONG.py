@@ -7,22 +7,30 @@ from pygame.locals import *
 
 def startMenu(window):
     menuClock = pygame.time.Clock()
+    menuball = b.Ball("MENU")
 
     while True:
         window.fill((0, 0, 0))
+        menuball.draw(window)
+        menuball.update()
         surfaces_to_print, surfaces_rects = prepareMenuOptions()
         option_choosed = ""
 
         # change collor when cursos collision
         for key in surfaces_rects:
             if surfaces_rects[key].collidepoint(pygame.mouse.get_pos()):
+                new_c = (80,80,80)
                 if key == "onePlayerOpt":
                     surfaces_to_print, surfaces_rects = prepareMenuOptions(
-                        onep_c=(80, 80, 80)
+                        onep_c= new_c
                     )
                 if key == "twoPlayerOpt":
                     surfaces_to_print, surfaces_rects = prepareMenuOptions(
-                        twop_c=(80, 80, 80)
+                        twop_c=new_c
+                    )
+                if key == "instructionsOpt":
+                    surfaces_to_print, surfaces_rects = prepareMenuOptions(
+                        instr_c=new_c
                     )
                 option_choosed = key
 
@@ -39,7 +47,7 @@ def startMenu(window):
         menuClock.tick(60)
 
 
-def prepareMenuOptions(onep_c=(255, 255, 255), twop_c=(255, 255, 255)):
+def prepareMenuOptions(onep_c=(255, 255, 255), twop_c=(255, 255, 255),instr_c = (255,255,255)):
     pygame.font.init()
 
     title_c = (255, 255, 255)
@@ -56,9 +64,9 @@ def prepareMenuOptions(onep_c=(255, 255, 255), twop_c=(255, 255, 255)):
 
     # 1p
     onePlayerOpt = optionFont.render("1-P Mode", True, (0, 0, 0))
-    temp_sur = pygame.Surface(onePlayerOpt.get_size())
+    temp_sur = pygame.Surface((settings.WIDTH - 110,45))
     temp_sur.fill(onep_c)
-    temp_sur.blit(onePlayerOpt, (0, 0))
+    temp_sur.blit(onePlayerOpt, ((temp_sur.get_rect().width - onePlayerOpt.get_rect().width)//2, 0))
     onePlayerOpt = temp_sur
     onePlayerOpt_rect = onePlayerOpt.get_rect()
     onePlayerOpt_rect.top = title_rect.bottom + 30
@@ -66,19 +74,30 @@ def prepareMenuOptions(onep_c=(255, 255, 255), twop_c=(255, 255, 255)):
 
     # 2p
     twoPlayerOpt = optionFont.render("2-P Mode", True, (0, 0, 0))
-    temp_sur = pygame.Surface(twoPlayerOpt.get_size())
+    temp_sur = pygame.Surface((settings.WIDTH - 110,45))
     temp_sur.fill(twop_c)
-    temp_sur.blit(twoPlayerOpt, (0, 0))
+    temp_sur.blit(twoPlayerOpt, ((temp_sur.get_rect().width - twoPlayerOpt.get_rect().width)//2, 0))
     twoPlayerOpt = temp_sur
     twoPlayerOpt_rect = twoPlayerOpt.get_rect()
     twoPlayerOpt_rect.top = onePlayerOpt_rect.bottom + 10
     twoPlayerOpt_rect.centerx = window_center
+
+    #Instructions
+    instructionsOpt = optionFont.render("Instructions", True, (0, 0, 0))
+    temp_sur = pygame.Surface((settings.WIDTH - 110,45))
+    temp_sur.fill(instr_c)
+    temp_sur.blit(instructionsOpt, ((temp_sur.get_rect().width - instructionsOpt.get_rect().width)//2, 0))
+    instructionsOpt = temp_sur
+    instructionsOpt_rect = instructionsOpt.get_rect()
+    instructionsOpt_rect.top = twoPlayerOpt_rect.bottom + 10
+    instructionsOpt_rect.centerx = window_center
 
     # list of surfaces to print
     surfaces = [
         (title, title_rect.topleft),
         (onePlayerOpt, onePlayerOpt_rect),
         (twoPlayerOpt, twoPlayerOpt_rect),
+        (instructionsOpt, instructionsOpt_rect)
     ]
 
     # dict of rect
@@ -86,6 +105,7 @@ def prepareMenuOptions(onep_c=(255, 255, 255), twop_c=(255, 255, 255)):
         "title": title_rect,
         "onePlayerOpt": onePlayerOpt_rect,
         "twoPlayerOpt": twoPlayerOpt_rect,
+        "instructionsOpt": instructionsOpt_rect
     }
 
     return surfaces, rects
@@ -116,6 +136,8 @@ def onePlayerMode(window):
                 if event.key == K_RIGHT or event.key == K_d:
                     player.right = True
             if event.type == KEYUP:
+                if event.key == K_q:
+                    return
                 if event.key == K_RETURN:
                     game_start = True
                 if event.key == K_LEFT or event.key == K_a:
@@ -263,6 +285,8 @@ def twoPlayerMode(window):
                 if event.key == K_d:
                     p2.right = True
             if event.type == KEYUP:
+                if event.key == K_q:
+                    return
                 if event.key == K_RETURN:
                     game_start = True
                 # p1
@@ -325,7 +349,7 @@ def twoPlayerMode(window):
 
     game_ended = True
     settings.gameover_sound.play()
-    
+
     while game_ended:
         window.fill((0,0,0))
 

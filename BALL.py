@@ -22,6 +22,8 @@ class Ball(pygame.sprite.Sprite):
             self.size // 2,
         )
         self.rect.center = (settings.WIDTH // 2, settings.HEIGHT // 2)
+        if gamemode == "MENU":
+            self.rect.center = (random.randint(self.size,settings.WIDTH), random.randint(self.size,settings.HEIGHT))
 
     def update(self):
         self.check_wall_collision()
@@ -51,10 +53,14 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.right > settings.WIDTH:
             settings.wall_hit_sound.play()
             self.right = 0
-        if self.rect.top > settings.HEIGHT:
+        if self.rect.top > settings.HEIGHT and self.gamemode != 'MENU':
             self.ball_on_board = False
             settings.ball_dead_sound.play()
-        if self.gamemode == "1P":
+        if self.gamemode == 'MENU':
+            if self.rect.bottom > settings.HEIGHT:
+                settings.wall_hit_sound.play()
+                self.down = 0
+        if self.gamemode == "1P" or self.gamemode == "MENU":
             if self.rect.top < 0:
                 settings.wall_hit_sound.play()
                 self.down = 1
