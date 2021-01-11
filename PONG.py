@@ -32,6 +32,10 @@ def startMenu(window):
                     surfaces_to_print, surfaces_rects = prepareMenuOptions(
                         instr_c=new_c
                     )
+                if key == "soundOpt":
+                    surfaces_to_print, surfaces_rects = prepareMenuOptions(
+                        sound_c=new_c
+                    )
                 option_choosed = key
 
         for event in pygame.event.get():
@@ -39,15 +43,15 @@ def startMenu(window):
                 pygame.quit()
                 sys.exit()
             if event.type == MOUSEBUTTONUP:
-                if event.button == 1:
+                if event.button == 1 and option_choosed in surfaces_rects.keys():
                     return option_choosed
         window.blits(surfaces_to_print)
         pygame.display.update()
 
         menuClock.tick(60)
 
-
-def prepareMenuOptions(onep_c=(255, 255, 255), twop_c=(255, 255, 255),instr_c = (255,255,255)):
+#This func could be created as class but im lazy
+def prepareMenuOptions(onep_c=(255, 255, 255), twop_c=(255, 255, 255),instr_c = (255,255,255),sound_c =(255,255,255)):
     pygame.font.init()
 
     title_c = (255, 255, 255)
@@ -92,12 +96,23 @@ def prepareMenuOptions(onep_c=(255, 255, 255), twop_c=(255, 255, 255),instr_c = 
     instructionsOpt_rect.top = twoPlayerOpt_rect.bottom + 10
     instructionsOpt_rect.centerx = window_center
 
+    #Sound
+    soundOpt = optionFont.render("Sounds:"+str(settings.sounds), True, (0, 0, 0))
+    temp_sur = pygame.Surface((settings.WIDTH - 110,45))
+    temp_sur.fill(sound_c)
+    temp_sur.blit(soundOpt, ((temp_sur.get_rect().width - soundOpt.get_rect().width)//2, 0))
+    soundOpt = temp_sur
+    soundOpt_rect = soundOpt.get_rect()
+    soundOpt_rect.top = instructionsOpt_rect.bottom + 10
+    soundOpt_rect.centerx = window_center
+
     # list of surfaces to print
     surfaces = [
         (title, title_rect.topleft),
         (onePlayerOpt, onePlayerOpt_rect),
         (twoPlayerOpt, twoPlayerOpt_rect),
-        (instructionsOpt, instructionsOpt_rect)
+        (instructionsOpt, instructionsOpt_rect),
+        (soundOpt,soundOpt_rect)
     ]
 
     # dict of rect
@@ -105,7 +120,8 @@ def prepareMenuOptions(onep_c=(255, 255, 255), twop_c=(255, 255, 255),instr_c = 
         "title": title_rect,
         "onePlayerOpt": onePlayerOpt_rect,
         "twoPlayerOpt": twoPlayerOpt_rect,
-        "instructionsOpt": instructionsOpt_rect
+        "instructionsOpt": instructionsOpt_rect,
+        "soundOpt":soundOpt_rect
     }
 
     return surfaces, rects
@@ -185,7 +201,7 @@ def onePlayerMode(window):
         onePlayerClock.tick(60)
 
     game_ended = True
-    settings.gameover_sound.play()
+    settings.play_sound('gameover')
 
     while game_ended:
         window.fill((0,0,0))
@@ -348,7 +364,7 @@ def twoPlayerMode(window):
         twoPlayerClock.tick(60)
 
     game_ended = True
-    settings.gameover_sound.play()
+    settings.play_sound('gameover')
 
     while game_ended:
         window.fill((0,0,0))
@@ -391,3 +407,8 @@ if __name__ == "__main__":
             onePlayerMode(window)
         if game_mode == "twoPlayerOpt":
             twoPlayerMode(window)
+        if game_mode == 'soundOpt':
+            if settings.sounds == 'on':
+                settings.sounds = 'off'
+            else:
+                settings.sounds = 'on'
