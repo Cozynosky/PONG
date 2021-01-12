@@ -204,8 +204,8 @@ def onePlayerMode(window):
                 new_round = True
 
         # draw elements
-        player.draw(window)
         ball.draw(window)
+        player.draw(window)
         lifes = score_font.render("LIFES:" + "♥" * player.lifes, True, (0, 255, 255))
         score = score_font.render("SCORE:" + str(player.score), True, (0, 255, 255))
         score_rect = score.get_rect()

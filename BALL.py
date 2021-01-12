@@ -10,6 +10,7 @@ class Ball(pygame.sprite.Sprite):
         self.gamemode = gamemode
         self.size = 15
         self.speed = 3
+        self.just_hitted = 0
         self.down = random.choice([0, 1])  # vertical 0 - up 1 - down
         self.right = random.choice([0, 1])  # horizontal 0 - left  1 - right
         self.color = (255, 255, 255)
