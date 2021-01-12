@@ -15,7 +15,6 @@ you have three chances to miss the ball.
 
 Next to do
 ----------
-* Fixing the problem with ball sliding on the paddle when its moving opposide direction
 * Highscore table, stored in a file
 * Gamemode with powerups, like paddle size up/down,another ball spawn
 * Added visual options in menu like possibility to change ball colour or skin
