@@ -21,10 +21,9 @@ Next to do
 
 Screenshots
 ===========
-![Menu](DATA/SCREENSHOTS/game_menu.PNG "Main menu")
-![Instructions](DATA/SCREENSHOTS/instructions.PNG "Instructions")
-![1P mode](DATA/SCREENSHOTS/1P_mode.PNG "1P mode")
-![2P mode](DATA/SCREENSHOTS/2P_mode.PNG "2P mode")
+![Menu](https://media.giphy.com/media/ELM5HttSNS6EkTWbbc/giphy.gif "Main menu")
+![Menu](https://media.giphy.com/media/lawaLSF5XT4Iii71s2/giphy.gif "1P")
+![Menu](https://media.giphy.com/media/5RM5qyJWaaxu6qtox1/giphy.gif "2P")
 
 Technologies
 ===========
